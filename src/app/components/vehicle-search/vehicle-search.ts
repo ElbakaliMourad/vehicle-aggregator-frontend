@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { VehicleService } from '../../services/vehicle';
 import { VehicleSummary } from '../../models/vehicle-summary';
@@ -12,10 +12,10 @@ import { VehicleSummary } from '../../models/vehicle-summary';
 })
 export class VehicleSearch {
 
-  // 1. STATE VARIABLES
-  // These hold the data so the HTML can show it later
-  vehicleData: VehicleSummary | null = null;
-  errorMessage: string = '';
+  // 1. STATE VARIABLES changed to SIGNALS
+  // A signal acts as a wrapper around data that instantly alerts the HTML when it changes.
+  vehicleData = signal<VehicleSummary | null>(null);
+  errorMessage = signal<string>('');
 
   // 2. DEPENDENCY INJECTION
   // We ask Angular to give us an instance of VehicleService
@@ -24,13 +24,13 @@ export class VehicleSearch {
   // 3. THE SEARCH FUNCTION
   // This runs when we click the "Decode VIN" button
   onSearch(vin: string) {
-    // Clear out any old data from a previous search
-    this.errorMessage = '';
-    this.vehicleData = null;
+    // 2. USE .set() TO UPDATE SIGNALS
+    this.errorMessage.set('');
+    this.vehicleData.set(null);
 
     // Safety check: Don't search if the box is empty
     if (!vin) {
-      this.errorMessage = 'Please enter a VIN.';
+      this.errorMessage.set('Please enter a VIN.');
       return;
     }
 
@@ -42,13 +42,14 @@ export class VehicleSearch {
       // If Java sends back a 200 OK success response...
       next: (data) => {
         console.log("SUCCESS! Data received from Java:", data);
-        this.vehicleData = data;
+        // This .set() guarantees the HTML will instantly redraw
+        this.vehicleData.set(data);
       },
 
       // If Java sends back a 404 Not Found or 500 Error...
       error: (err) => {
-        console.error("ERROR! Something went wrong:", err);
-        this.errorMessage = 'Could not find that vehicle. Check the VIN and try again.';
+        console.error("ERROR:", err);
+        this.errorMessage.set('Could not find that vehicle. Check the VIN and try again.');
       }
 
     });

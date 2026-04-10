@@ -17,13 +17,13 @@
         </button>
     </div>
 
-    @if (errorMessage) {
+    @if (errorMessage()) {
     <div class="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-center font-medium">
-        {{ errorMessage }}
+        {{ errorMessage() }}
     </div>
     }
 
-    @if (vehicleData) {
+    @if (vehicleData()) {
     <div class="mt-8 border-t border-gray-200 pt-8">
         <h3 class="text-xl font-bold text-gray-800 mb-6 text-center">Vehicle Specifications</h3>
 
@@ -31,22 +31,22 @@
 
             <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
                 <p class="text-xs text-gray-500 uppercase font-semibold tracking-wider">Make</p>
-                <p class="text-lg font-medium text-gray-900">{{ vehicleData.make }}</p>
+                <p class="text-lg font-medium text-gray-900">{{ vehicleData()?.make }}</p>
             </div>
 
             <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
                 <p class="text-xs text-gray-500 uppercase font-semibold tracking-wider">Model</p>
-                <p class="text-lg font-medium text-gray-900">{{ vehicleData.model }}</p>
+                <p class="text-lg font-medium text-gray-900">{{ vehicleData()?.model }}</p>
             </div>
 
             <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
                 <p class="text-xs text-gray-500 uppercase font-semibold tracking-wider">Model Year</p>
-                <p class="text-lg font-medium text-gray-900">{{ vehicleData.year }}</p>
+                <p class="text-lg font-medium text-gray-900">{{ vehicleData()?.year }}</p>
             </div>
 
             <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
                 <p class="text-xs text-gray-500 uppercase font-semibold tracking-wider">Body Class</p>
-                <p class="text-lg font-medium text-gray-900">{{ vehicleData.bodyClass }}</p>
+                <p class="text-lg font-medium text-gray-900">{{ vehicleData()?.bodyClass }}</p>
             </div>
 
         </div>
