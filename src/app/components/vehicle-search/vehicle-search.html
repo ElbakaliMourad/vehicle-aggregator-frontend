@@ -8,18 +8,25 @@
     </p>
 
     <div class="flex flex-col sm:flex-row gap-4">
-        <input #vinInput type="text" placeholder="Enter VIN here..."
-            class="flex-1 px-5 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 uppercase font-mono tracking-wide">
+        <input #vinInput type="text" maxlength="17" [disabled]="isLoading()" placeholder="Enter 17-digit VIN..."
+            class="flex-1 px-5 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 uppercase font-mono tracking-wide disabled:bg-gray-100 disabled:text-gray-400">
 
-        <button (click)="onSearch(vinInput.value)"
-            class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg shadow-md transition-colors duration-200">
-            Decode VIN
+        <button (click)="onSearch(vinInput.value)" [disabled]="isLoading()"
+            class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg shadow-md transition-colors duration-200 disabled:bg-blue-400 disabled:cursor-not-allowed">
+            {{ isLoading() ? 'Searching...' : 'Decode VIN' }}
         </button>
     </div>
 
     @if (errorMessage()) {
     <div class="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-center font-medium">
         {{ errorMessage() }}
+    </div>
+    }
+
+    @if (isLoading()) {
+    <div class="mt-12 flex flex-col justify-center items-center">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-blue-600"></div>
+        <p class="mt-4 text-gray-500 font-medium animate-pulse">Contacting NHTSA Database...</p>
     </div>
     }
 
